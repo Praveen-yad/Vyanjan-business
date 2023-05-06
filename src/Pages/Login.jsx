@@ -1,21 +1,26 @@
-import React,{ useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { RxCross2 } from 'react-icons/rx'
-import Cookies from 'js-cookie'
-import { GiDualityMask } from 'react-icons/gi'
 import { motion } from 'framer-motion'
 import Url from '../Url'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MetroSpinner } from 'react-spinners-kit'
 
 function Login() {
   const navigate = useNavigate()
   const [ password, setPassword ] = useState('')
   const [toggle, setToggle] = useState(false)
+  const [loading, setLoading ] = useState(false)
+
+  useEffect(() => {
+    localStorage.getItem('token') && navigate('/orders')
+  },[])
 
   const SubmitHandler = async(e) => {
     e.preventDefault();
+    setLoading(true)
     const response = await fetch(`${Url}/login`,{
       method:"POST",
       headers:{
@@ -26,20 +31,20 @@ function Login() {
         password:password
       })
     });
+    // console.log(response)
     const data = await response.json();
 
     if(data.sucess){
-      if(data.info.business === true){
-        Cookies.set('token',data.token)
-        navigate('/orders')
-      }
-      localStorage.setItem('email',data.info.email)
-      localStorage.setItem('name',data.info.name)
+      setLoading(false)
+      localStorage.setItem('token', data.token)
+      navigate('/orders')
     }else{
-        toast.error("Invalid Key, Try Again")
+      setLoading(false)
+      toast.error("Invalid Key, Try Again")
     }
   }
 
+  
   return (
     <div className="w-full min-h-screen flex flex-col items-center lg:items-start lg:flex-row overflow-hidden py-5 md:pl-16 bg-neutral-900 font-poppins relative ">
       <Link to={'/'}>
@@ -60,12 +65,12 @@ function Login() {
             <span className={`absolute right-3 bottom-0 top-2.5`} onClick={() => setToggle(!toggle)}><div className={`-mt-0.5 ${toggle && 'text-red-500' } cursor-pointer transition-colors duration-200`}>👁️</div></span>
           </div>
           <div className="flex justify-between">
-            <div className="text-[12px]">Don't have an account?{' '}
-            <Link to={'/signup'}>
-             <span className="text-theme underline cursor-pointer">Signup</span>
-            </Link>
+            <div className="text-[12px]">Visit the Client side?{' '}
+            <a href='https://vyanjan.vercel.app/' target='_blank'>
+             <span className="text-theme underline cursor-pointer">Vyanjan</span>
+            </a>
             </div>
-            <motion.div whileTap={{scale:0.97}}><button className="bg-theme px-4 py-2 rounded-full cursor-pointer hover:outline outline-[2px]">Proceed</button></motion.div>
+            <motion.div whileTap={{scale:0.97}}><button className="bg-theme flex justify-center py-2 rounded-full cursor-pointer hover:outline w-[7rem] outline-[2px] h-[2.5rem]">{loading ? <MetroSpinner size={25} color="#fff"/> :'Proceed'}</button></motion.div>
           </div>
         </form>
         <ToastContainer
