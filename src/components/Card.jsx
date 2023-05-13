@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import { change } from '../store/ToggleSlice'
-import { AnimatePresence, Variants, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import Url from '../Url'
+import { MetroSpinner } from 'react-spinners-kit'
 
 const Card = ({item}) => {
     const dispatch = useDispatch()
     const [modal, setModal] = useState(false)
+    const [loading, setloading ] = useState(false)
+
     const RemoveHandler = async(id) => {
+        setloading(true)
         await axios.post(`${Url}/remove`, {
            id:id
         }) 
         dispatch(change()) 
+        setloading(false)
         setModal(false)
     }
     const Animate = {
@@ -29,16 +34,18 @@ const Card = ({item}) => {
         
     }
   return (
-    <div className='p-3 bg-neutral-900 rounded-3xl flex items-center shadow-black shadow-[0px_1px_4px_2px] relative overflow-hidden'>
-        <img src={item.img} className='w-[14rem] rounded-2xl h-[12rem] object-cover' />
-        <div className='h-[12rem] pl-4 flex flex-col text-white'>
+    <div className='w-[90vw] sm:w-[27.5rem] p-3 bg-neutral-900 rounded-3xl flex flex-col  items-center shadow-black shadow-[0px_1px_4px_2px] relative overflow-hidden'>
+        <div className='w-full ' >
+            <img alt="failed" src={item.img} className='rounded-2xl w-full h-[14rem] object-cover' />
+        </div>
+        <div className='w-full h-auto sm:h-[13rem] flex flex-col text-white'>
             <div className='text-[2rem] font-medium text-theme'>{item.name}</div>
             <div className='text-lg'>{item.CategoryName}</div>
-            <textarea readOnly={true} value={item.description.slice(0,100)} className='bg-transparent overflow-hidden py-1 w-[27rem] outline-none mt-2'/>
-            <div className='flex space-x-5 mt-3'>
-                <div className='bg-theme px-4 py-1 rounded-md' >Half:{item.options.half}</div> 
+            <textarea readOnly={true} value={item.description.slice(0,100)} className='bg-transparent h-[5rem] py-1 w-full outline-none mt-2'/>
+            <div className='flex justify-between sm:justify-start space-x-0 sm:space-x-4 mt-3'>
+                <div className='bg-theme px-4 py-1 rounded-bl-xl sm:rounded-bl-md rounded-md' >Half:{item.options.half}</div> 
                 <div className='bg-theme px-4 py-1 rounded-md'>Full: {item.options.full}</div>
-                <motion.div whileTap={{scale:0.97}} className='bg-red-500 px-4 py-1 rounded-md cursor-pointer' onClick={() => setModal(!modal)} >Remove Item</motion.div>
+                <motion.div whileTap={{scale:0.97}} className='bg-red-500 px-4 py-1 rounded-md cursor-pointer rounded-br-xl sm:rounded-br-md' onClick={() => setModal(!modal)} >Remove</motion.div>
             </div>
         </div>
         <AnimatePresence>
@@ -50,10 +57,12 @@ const Card = ({item}) => {
                 exit='hidden'
                 transition={{type:'spring', duration:0.5}} 
                 variants={Animate} 
-                className='h-[12rem] w-[14rem] bg-neutral-200 absolute left-3 rounded-2xl flex flex-col items-center justify-center'>
+                className='h-[14rem] w-[84vw] sm:w-[26rem] bg-neutral-200 absolute left-3 rounded-2xl flex flex-col items-center justify-center'>
                     <div className='text-center text-lg px-2'>Are You sure You want to remove this item?</div>
                     <div className='flex space-x-3'>
-                        <motion.div whileHover={{scale:1.04}} whileTap={{scale:0.97}} className='bg-red-600 text-white px-5 py-1 rounded-lg cursor-pointer mt-3' onClick={() => RemoveHandler(item._id)}>Yes</motion.div>
+                        <motion.div whileHover={{scale:1.04}} whileTap={{scale:0.97}} className='bg-red-600 text-white px-5 py-1 rounded-lg cursor-pointer mt-3' onClick={() => RemoveHandler(item._id)}>
+                            {loading ? <MetroSpinner size={20} /> : 'Yes'}    
+                        </motion.div>
                         <motion.div whileHover={{scale:1.04}} whileTap={{scale:0.97}} className='bg-black text-white px-5 py-1 rounded-lg cursor-pointer mt-3' onClick={() => setModal(false)}>No</motion.div>
                     </div>
 

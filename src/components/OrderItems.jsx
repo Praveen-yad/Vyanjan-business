@@ -36,7 +36,7 @@ const OrderItems = ({item, setRecall}) => {
   return (
     <div>
         <div className='pl-7 pt-3 pb-6 text-lg'>
-            <div className=' text-white  w-fit md:flex md:flex-wrap space-y-2 md:space-y-0 space-x-0 md:space-x-5'>
+            <div className=' text-white w-fit md:flex md:flex-wrap space-y-2 md:space-y-0 space-x-0 md:space-x-5 max-w-[19rem] sm:max-w-none '>
                 <div className='bg-neutral-800 shadow-black shadow-sm px-4 py-2 rounded-xl capitalize'>From: {item.name}</div>
                 <div className='bg-neutral-800 shadow-black shadow-sm px-4 py-2 rounded-xl'>Location: {item.location}</div>
                 <div className='bg-neutral-800 shadow-black shadow-sm px-4 py-2 rounded-xl'>Phone Number: {item.phone}</div>

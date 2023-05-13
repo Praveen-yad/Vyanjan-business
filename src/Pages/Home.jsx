@@ -15,6 +15,7 @@ const Home = () => {
             const response = await axios.post(`${Url}/allOrders`,{
                 token: localStorage.getItem('token')
             })
+            console.log(array)
             setArray(response.data.json)
             setToken(response.data.sucess)
         }
@@ -28,8 +29,8 @@ const Home = () => {
         <div className='text-4xl text-white pt-4 pl-3 pb-6 font-medium'>Orders</div>
     </div>}
     {token && <div className='space-y-6 pb-10 min-h-screen relative'>
-        {array  && array.slice(0).reverse().map((item, index) =>(
-            item.status !== 'Delivered' && <OrderItems item={item} key={index} setRecall={setRecall}/>
+        {array  && array.slice(0).reverse().map((item) =>(
+            item.status !== 'Delivered' && <OrderItems item={item} key={item._id} setRecall={setRecall}/>
         ))}
     </div>
     }

@@ -115,13 +115,13 @@ const Items = () => {
   return (
     <div className='relative w-full min-h-screen font-poppins bg-neutral-900 flex flex-col'>
         <Navbar/>
-        <div className='flex items-center justify-between px-7'>
-            <div className='text-neutral-300 mt-4 text-[2.4rem] font-medium'>All Items</div>
+        <div className='flex items-center justify-between px-3 sm:px-7'>
+            <div className='text-neutral-300 mt-4 text-[1.8rem] sm:text-[2.4rem] font-medium'>All Items</div>
             <motion.div whileHover={{scale:1.018}} whileTap={{scale:0.985}} onClick={() =>{
                 setAdd(!add)
                 setNewadd(!newadd)
             }}
-            className={`text-lg mt-4  text-white bg-theme px-3 py-1 rounded-lg cursor-pointer`}>Add New Item</motion.div>
+            className={`text-md sm:text-lg mt-4  text-white bg-theme px-3 py-1 rounded-lg cursor-pointer`}>Add New Item</motion.div>
             {verify && newadd && 
                 <div className='absolute top-0 left-0 w-full h-full bg-black bg-opacity-80 backdrop-blur-sm z-30 '>
                     <div className='w-full sticky top-0 h-[100vh] flex items-center justify-center' >
@@ -133,7 +133,7 @@ const Items = () => {
                              exit='hidden'
                              variants={animate} 
                              transition={{type:'spring', duration:0.5}} 
-                             className='w-[36rem] rounded-3xl h-[30.3rem] bg-neutral-200 mt-20 p-3 flex flex-col z-40'>
+                             className=' w-[95vw] sm:w-[36rem] rounded-3xl h-[30.3rem] bg-neutral-200 mt-20 p-3 flex flex-col z-40'>
                                 <div className='flex justify-end'><MdClose size={30} className='hover:bg-black hover:bg-opacity-25 rounded-full p-1 scale-110' onClick={() => {
                                     setAdd(false)
                                     setTimeout(()=>{
@@ -157,12 +157,12 @@ const Items = () => {
                                     </div>
                                     <div className='flex justify-between'>
                                         <div className='relative w-fit mt-1'>
-                                            <input required value={categories} onChange={console.log()} className='absolute py-2 w-[12rem] rounded-lg bg-transparent -z-10 outline-none' />
-                                            <motion.div className='z-10 bg-theme w-[12rem] justify-center py-2 flex items-center rounded-lg cursor-pointer select-none' onClick={() => setCategory(!category)} whileHover={{scale:1.02}} whileTap={{scale:0.99}}>Category <MdExpandMore size={23} className={` ml-2 ${category ? 'rotate-180' : 'rotate-0'} transition-all duration-300 `}/></motion.div>
+                                            <input required value={categories} className='absolute py-2 w-[12rem] rounded-lg bg-transparent -z-10 outline-none' />
+                                            <motion.div className='z-10 bg-theme w-[9rem] sm:w-[12rem] justify-center py-2 flex items-center rounded-lg cursor-pointer select-none' onClick={() => setCategory(!category)} whileHover={{scale:1.02}} whileTap={{scale:0.99}}>Category <MdExpandMore size={23} className={` ml-2 ${category ? 'rotate-180' : 'rotate-0'} transition-all duration-300 `}/></motion.div>
                                             <div className='absolute right-1 translate-y-1'>{categories}</div>
                                             <AnimatePresence>
                                             {category && 
-                                                <motion.div key={'category'} animate='visible' initial="hidden" exit="hidden" variants={menu} transition={{type:"spring", duration:0.3, }} className=' z-50 w-[12rem] text-white bg-neutral-800 top-12 absolute overflow-hidden rounded-xl space-y-1 p-1'>
+                                                <motion.div key={'category'} animate='visible' initial="hidden" exit="hidden" variants={menu} transition={{type:"spring", duration:0.3, }} className=' z-50 w-[9rem] sm:w-[12rem] text-white bg-neutral-800 top-12 absolute overflow-hidden rounded-xl space-y-1 p-1'>
                                                     <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Indian" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
                                                         setCategories('Indian')
                                                         setCategory(false)
@@ -178,11 +178,11 @@ const Items = () => {
                                                 </motion.div>}
                                             </AnimatePresence>
                                         </div>
-                                        <div className='w-[16rem] flex items-center justify-between'>
-                                            <div className='flex items-center'>Half
-                                                <input type='number' onChange={(e) => sethalf(e.target.value)} required value={half} placeholder='Price' className='w-[5rem] ml-2 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
-                                            <div className='flex items-center'>Full
-                                                <input value={full} onChange={(e) => setfull(e.target.value)} required type='number' placeholder='Price' className='w-[5rem] ml-2 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
+                                        <div className=' ml-2 flex items-center justify-between'>
+                                            <div className='flex items-center text-sm sm:text-base'>Half
+                                                <input type='number' onChange={(e) => sethalf(e.target.value)} required value={half} placeholder='Price' className=' w-[3.3rem] sm:w-[5rem] ml-1 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
+                                            <div className='flex items-center sm:text-base text-sm ml-1'>Full
+                                                <input value={full} onChange={(e) => setfull(e.target.value)} required type='number' placeholder='Price' className=' w-[3.3rem] sm:w-[5rem] ml-2 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
                                         </div>
                                     </div>
                                     <div className='flex justify-between'>
@@ -193,7 +193,7 @@ const Items = () => {
                                             </div>
                                             <motion.button whileHover={{scale:1.02}} whileTap={{scale:1}} className='w-full py-2 rounded-lg h-[2.5rem] bg-sky-500 flex justify-center text-center'>{loading ? <MetroSpinner size={25} color="#fff"/> : 'Submit'  }</motion.button>
                                         </div>
-                                        <div className='w-[16rem] mt-2 h-[10rem] border-2 border-dashed border-theme flex flex-col items-center justify-center rounded-2xl text-lg p-1'>
+                                        <div className=' w-[14rem] ml-2 sm:w-[16rem] mt-2 h-[10rem] border-2 border-dashed border-theme flex flex-col items-center justify-center rounded-2xl text-lg p-1'>
                                             {imageurl ? 
                                             <img src={imageurl} className=' h-full w-full rounded-xl object-cover' />
                                             :
@@ -209,9 +209,9 @@ const Items = () => {
                 </div>
             }
         </div>
-        <div className=' grid grid-cols-1 md:grid-cols-2 gap-10 mt-3 mb-5 mx-8'>
-            {data.slice(0).reverse().map((item, index) => (
-                <Card item={item} key={index} />
+        <div className='flex justify-center flex-wrap gap-8 gap-x-10 mt-3 mb-5 mx-4'>
+            {data.slice(0).reverse().map((item) => (
+                <Card item={item} key={item._id} />
                 ))}
         </div>
         <ToastContainer position='bottom-right' />
