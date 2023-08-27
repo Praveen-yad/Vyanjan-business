@@ -29,16 +29,19 @@ const Items = () => {
     const [full, setfull] = useState()
     const [imageurl, setImageurl] = useState('')
     const [loading, setLoading] = useState(false)
+    const [itemLoading, setItemLoading] = useState(false)
 
 
     useEffect(() => {
         const ApiCall = async() => {
+            setItemLoading(true)
             const json = await axios.post(`${Url}/allFood`,{
                 token: localStorage.getItem('token')
             })
             if(json.data.verify){
                 setdata(json.data.item)
                 setVerify(json.data.verify)
+                setItemLoading(false)
             }
         }
         ApiCall();
@@ -122,98 +125,106 @@ const Items = () => {
                 setNewadd(!newadd)
             }}
             className={`text-md sm:text-lg mt-4  text-white bg-theme px-3 py-1 rounded-lg cursor-pointer`}>Add New Item</motion.div>
-            {verify && newadd && 
-                <div className='absolute top-0 left-0 w-full h-full bg-black bg-opacity-80 backdrop-blur-sm z-30 '>
-                    <div className='w-full sticky top-0 h-[100vh] flex items-center justify-center' >
-                        <AnimatePresence>
-                            {add && 
-                            <motion.div key='some'
-                             initial="hidden" 
-                             animate="visible" 
-                             exit='hidden'
-                             variants={animate} 
-                             transition={{type:'spring', duration:0.5}} 
-                             className=' w-[95vw] sm:w-[36rem] rounded-3xl h-[30.3rem] bg-neutral-200 mt-20 p-3 flex flex-col z-40'>
-                                <div className='flex justify-end'><MdClose size={30} className='hover:bg-black hover:bg-opacity-25 rounded-full p-1 scale-110' onClick={() => {
-                                    setAdd(false)
-                                    setTimeout(()=>{
-                                        setNewadd(false)
-                                    },300)
-                                    }}/></div>
-                                <form onSubmit={SubmitForm} className='space-y-4 mx-3'>
-                                    <div>
-                                        <label>Dish Name</label>
-                                        <input value={name} required onChange={(e) => setName(e.target.value)} placeholder='Name' className='w-full outline-none bg-transparent border border-black py-1 px-3 rounded-lg' />
-                                    </div>
-                                    <div>
-                                        <div className='flex justify-between pr-1'>
-                                            <label>Description</label>
-                                            {(description.length <= 99) ? 
-                                            <div className='flex items-center'><div className='w-2 h-2 mr-1 bg-green-500 rounded-full'></div>{description.length}</div>
-                                            : 
-                                            <div className='flex items-center'><div className='w-2 h-2 mr-1 bg-red-500 rounded-full'></div>{description.length}</div>}
+            
+                {verify && newadd && 
+                    <div className='absolute top-0 left-0 w-full h-full bg-black bg-opacity-80 backdrop-blur-sm z-30 '>
+                        <div className='w-full sticky top-0 h-[100vh] flex items-center justify-center' >
+                            <AnimatePresence>
+                                {add && 
+                                <motion.div key='some'
+                                initial="hidden" 
+                                animate="visible" 
+                                exit='hidden'
+                                variants={animate} 
+                                transition={{type:'spring', duration:0.5}} 
+                                className=' w-[95vw] sm:w-[36rem] rounded-3xl h-[30.3rem] bg-neutral-200 mt-20 p-3 flex flex-col z-40'>
+                                    <div className='flex justify-end'><MdClose size={30} className='hover:bg-black hover:bg-opacity-25 rounded-full p-1 scale-110' onClick={() => {
+                                        setAdd(false)
+                                        setTimeout(()=>{
+                                            setNewadd(false)
+                                        },300)
+                                        }}/></div>
+                                    <form onSubmit={SubmitForm} className='space-y-4 mx-3'>
+                                        <div>
+                                            <label>Dish Name</label>
+                                            <input value={name} required onChange={(e) => setName(e.target.value)} placeholder='Name' className='w-full outline-none bg-transparent border border-black py-1 px-3 rounded-lg' />
                                         </div>
-                                        <textarea value={description} required onChange={(e) => setDescription(e.target.value)} maxLength={100} placeholder='Describe it a Bit' className='w-full h-[4.4rem] outline-none bg-transparent border border-black py-2 px-3 rounded-lg' />
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <div className='relative w-fit mt-1'>
-                                            <input required value={categories} className='absolute py-2 w-[12rem] rounded-lg bg-transparent -z-10 outline-none' />
-                                            <motion.div className='z-10 bg-theme w-[9rem] sm:w-[12rem] justify-center py-2 flex items-center rounded-lg cursor-pointer select-none' onClick={() => setCategory(!category)} whileHover={{scale:1.02}} whileTap={{scale:0.99}}>Category <MdExpandMore size={23} className={` ml-2 ${category ? 'rotate-180' : 'rotate-0'} transition-all duration-300 `}/></motion.div>
-                                            <div className='absolute right-1 translate-y-1'>{categories}</div>
-                                            <AnimatePresence>
-                                            {category && 
-                                                <motion.div key={'category'} animate='visible' initial="hidden" exit="hidden" variants={menu} transition={{type:"spring", duration:0.3, }} className=' z-50 w-[9rem] sm:w-[12rem] text-white bg-neutral-800 top-12 absolute overflow-hidden rounded-xl space-y-1 p-1'>
-                                                    <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Indian" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
-                                                        setCategories('Indian')
-                                                        setCategory(false)
-                                                    }}>Indian</div>
-                                                    <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Italian" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
-                                                        setCategories('Italian')
-                                                        setCategory(false)
-                                                    }}>Italian</div>
-                                                    <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Mexican" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
-                                                        setCategories('Mexican')
-                                                        setCategory(false)
-                                                    }}>Mexican</div>
-                                                </motion.div>}
-                                            </AnimatePresence>
-                                        </div>
-                                        <div className=' ml-2 flex items-center justify-between'>
-                                            <div className='flex items-center text-sm sm:text-base'>Half
-                                                <input type='number' onChange={(e) => sethalf(e.target.value)} required value={half} placeholder='Price' className=' w-[3.3rem] sm:w-[5rem] ml-1 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
-                                            <div className='flex items-center sm:text-base text-sm ml-1'>Full
-                                                <input value={full} onChange={(e) => setfull(e.target.value)} required type='number' placeholder='Price' className=' w-[3.3rem] sm:w-[5rem] ml-2 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
-                                        </div>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <div className='w-[12rem] flex flex-col justify-center space-y-3 items-center '>
-                                            <div className='group flex flex-col items-center relative w-full'>
-                                                <input required type='file' className='outline-none absolute top-[5px] rounded-lg scale-y-[1.3] w-full z-20 opacity-0 bg-red-500' onChange={(e) => HandelFile(e)} />
-                                                <motion.div className='cursor-pointer bg-theme group-hover:scale-[1.02] transition-transform duration-200 ease-in-out  w-full text-center py-2 rounded-lg select-none'>Upload Image</motion.div>
+                                        <div>
+                                            <div className='flex justify-between pr-1'>
+                                                <label>Description</label>
+                                                {(description.length <= 99) ? 
+                                                <div className='flex items-center'><div className='w-2 h-2 mr-1 bg-green-500 rounded-full'></div>{description.length}</div>
+                                                : 
+                                                <div className='flex items-center'><div className='w-2 h-2 mr-1 bg-red-500 rounded-full'></div>{description.length}</div>}
                                             </div>
-                                            <motion.button whileHover={{scale:1.02}} whileTap={{scale:1}} className='w-full py-2 rounded-lg h-[2.5rem] bg-sky-500 flex justify-center text-center'>{loading ? <MetroSpinner size={25} color="#fff"/> : 'Submit'  }</motion.button>
+                                            <textarea value={description} required onChange={(e) => setDescription(e.target.value)} maxLength={100} placeholder='Describe it a Bit' className='w-full h-[4.4rem] outline-none bg-transparent border border-black py-2 px-3 rounded-lg' />
                                         </div>
-                                        <div className=' w-[14rem] ml-2 sm:w-[16rem] mt-2 h-[10rem] border-2 border-dashed border-theme flex flex-col items-center justify-center rounded-2xl text-lg p-1'>
-                                            {imageurl ? 
-                                            <img src={imageurl} className=' h-full w-full rounded-xl object-cover' />
-                                            :
-                                            <FcAddImage size={50}/>
-                                            }
-                                            
+                                        <div className='flex justify-between'>
+                                            <div className='relative w-fit mt-1'>
+                                                <input required value={categories} className='absolute py-2 w-[12rem] rounded-lg bg-transparent -z-10 outline-none' />
+                                                <motion.div className='z-10 bg-theme w-[9rem] sm:w-[12rem] justify-center py-2 flex items-center rounded-lg cursor-pointer select-none' onClick={() => setCategory(!category)} whileHover={{scale:1.02}} whileTap={{scale:0.99}}>Category <MdExpandMore size={23} className={` ml-2 ${category ? 'rotate-180' : 'rotate-0'} transition-all duration-300 `}/></motion.div>
+                                                <div className='absolute right-1 translate-y-1'>{categories}</div>
+                                                <AnimatePresence>
+                                                {category && 
+                                                    <motion.div key={'category'} animate='visible' initial="hidden" exit="hidden" variants={menu} transition={{type:"spring", duration:0.3, }} className=' z-50 w-[9rem] sm:w-[12rem] text-white bg-neutral-800 top-12 absolute overflow-hidden rounded-xl space-y-1 p-1'>
+                                                        <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Indian" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
+                                                            setCategories('Indian')
+                                                            setCategory(false)
+                                                        }}>Indian</div>
+                                                        <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Italian" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
+                                                            setCategories('Italian')
+                                                            setCategory(false)
+                                                        }}>Italian</div>
+                                                        <div className={`w-full text-lg py-2 flex items-center justify-center hover:bg-theme ${categories === "Mexican" && 'bg-theme'} transition-colors rounded-lg cursor-pointer`} onClick={() => {
+                                                            setCategories('Mexican')
+                                                            setCategory(false)
+                                                        }}>Mexican</div>
+                                                    </motion.div>}
+                                                </AnimatePresence>
+                                            </div>
+                                            <div className=' ml-2 flex items-center justify-between'>
+                                                <div className='flex items-center text-sm sm:text-base'>Half
+                                                    <input type='number' onChange={(e) => sethalf(e.target.value)} required value={half} placeholder='Price' className=' w-[3.3rem] sm:w-[5rem] ml-1 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
+                                                <div className='flex items-center sm:text-base text-sm ml-1'>Full
+                                                    <input value={full} onChange={(e) => setfull(e.target.value)} required type='number' placeholder='Price' className=' w-[3.3rem] sm:w-[5rem] ml-2 bg-transparent outline-none border border-black px-2 py-1 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' /></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </motion.div>}
-                        </AnimatePresence>
+                                        <div className='flex justify-between'>
+                                            <div className='w-[12rem] flex flex-col justify-center space-y-3 items-center '>
+                                                <div className='group flex flex-col items-center relative w-full'>
+                                                    <input required type='file' className='outline-none absolute top-[5px] rounded-lg scale-y-[1.3] w-full z-20 opacity-0 bg-red-500' onChange={(e) => HandelFile(e)} />
+                                                    <motion.div className='cursor-pointer bg-theme group-hover:scale-[1.02] transition-transform duration-200 ease-in-out  w-full text-center py-2 rounded-lg select-none'>Upload Image</motion.div>
+                                                </div>
+                                                <motion.button whileHover={{scale:1.02}} whileTap={{scale:1}} className='w-full py-2 rounded-lg h-[2.5rem] bg-sky-500 flex justify-center text-center'>{loading ? <MetroSpinner size={25} color="#fff"/> : 'Submit'  }</motion.button>
+                                            </div>
+                                            <div className=' w-[14rem] ml-2 sm:w-[16rem] mt-2 h-[10rem] border-2 border-dashed border-theme flex flex-col items-center justify-center rounded-2xl text-lg p-1'>
+                                                {imageurl ? 
+                                                <img src={imageurl} className=' h-full w-full rounded-xl object-cover' />
+                                                :
+                                                <FcAddImage size={50}/>
+                                                }
+                                                
+                                            </div>
+                                        </div>
+                                    </form>
+                                </motion.div>}
+                            </AnimatePresence>
+                        </div>
                     </div>
+                }
+        </div>
+        {itemLoading ? 
+                <div className='flex flex-col text-white space-y-2 h-[70vh] items-center justify-center'>
+                    <MetroSpinner size={50} color="#fff"/>
+                    <div>Loading...</div>
+                </div> 
+                    :
+                <div className='flex justify-center flex-wrap gap-8 gap-x-10 mt-3 mb-5 mx-4'>
+                    {data.slice(0).reverse().map((item) => (
+                        <Card item={item} key={item._id} />
+                        ))}
                 </div>
-            }
-        </div>
-        <div className='flex justify-center flex-wrap gap-8 gap-x-10 mt-3 mb-5 mx-4'>
-            {data.slice(0).reverse().map((item) => (
-                <Card item={item} key={item._id} />
-                ))}
-        </div>
+        }
         <ToastContainer position='bottom-right' />
         <Footer/>
     </div>
