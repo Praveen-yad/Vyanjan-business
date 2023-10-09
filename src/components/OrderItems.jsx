@@ -51,9 +51,9 @@ const OrderItems = ({item, setRecall}) => {
                     <AnimatePresence>
                         {toggle && 
                         <motion.div key="status" initial='hidden' animate='visible' exit='hidden' variants={statusMenu} transition={{duration:0.3, type:'spring'}} className=' z-20 absolute w-[14rem] h-[16.4rem] bg-neutral-800 overflow-hidden rounded-xl top-14 px-2 py-2 space-y-2'>
-                            <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Preparing" && 'bg-theme'} transition-colors hover:bg-theme`} onClick={() => setStatus('Preparing')}>🍳 Preparing</div>
-                            <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Arriving" && 'bg-theme'} transition-colors hover:bg-theme`} onClick={() => setStatus('Arriving')}>🛵 Out For Delivery</div>
-                            <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Delivered" && 'bg-theme'} transition-colors hover:bg-theme`} onClick={() => setStatus('Delivered')}>📦 Delivered</div>
+                            <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Preparing" && 'bg-neutral-900'} transition-colors hover:bg-neutral-900`} onClick={() => setStatus('Preparing')}>🍳 Preparing</div>
+                            <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Arriving" && 'bg-neutral-900'} transition-colors hover:bg-neutral-900`} onClick={() => setStatus('Arriving')}>🛵 Out For Delivery</div>
+                            <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Delivered" && 'bg-neutral-900'} transition-colors hover:bg-neutral-900`} onClick={() => setStatus('Delivered')}>📦 Delivered</div>
                             <div className={`w-full text-center py-2 cursor-pointer rounded-lg ${status === "Rejected" && 'bg-red-600'} transition-colors hover:bg-red-600`} onClick={() => setStatus('Rejected')}>❌ Reject Order</div>
                             {!!status && <div className='flex justify-end'><motion.div whileHover={{scale:1.03}} whileTap={{scale:1}}  className='w-fit select-none bg-theme px-4 py-1 rounded-lg cursor-pointer' onClick={() => SubmitHandler(item._id)} >Confirm</motion.div></div>}
                         </motion.div>}
@@ -73,9 +73,9 @@ const OrderItems = ({item, setRecall}) => {
                 <div className=' flex flex-col space-y-2'>
                     <div className='text-white mb-2'>{data.CategoryName}</div>
                     <div className='grid grid-cols-2 place-items-center scale-95 gap-x-4 gap-y-2.5 text-black'>
-                    <div className='bg-theme w-[7rem] text-center py-3 rounded-l-xl rounded-tr-xl'>Amount= {data.amount}</div>
-                    <div className='bg-theme w-[7rem] text-center py-3 rounded-tl-xl rounded-r-xl'>Size= {data.size}</div>
-                    <div className='bg-theme w-[7rem] text-center py-3 rounded-l-xl rounded-br-xl flex items-center justify-center'>Total=<BiRupee/>{(data.size === 'half')? data.options.half*data.amount : data.options.full*data.amount}</div>
+                    <div className='bg-neutral-800 text-white w-[7rem] text-center py-3 rounded-l-xl rounded-tr-xl'>Amount= {data.amount}</div>
+                    <div className='bg-neutral-800 text-white w-[7rem] text-center py-3 rounded-tl-xl rounded-r-xl'>Size= {data.size}</div>
+                    <div className='bg-neutral-800 text-white w-[7rem] text-center py-3 rounded-l-xl rounded-br-xl flex items-center justify-center'>Total=<BiRupee/>{(data.size === 'half')? data.options.half*data.amount : data.options.full*data.amount}</div>
                     <div className='bg-green-500 w-[7rem] text-center py-3 rounded-r-xl rounded-bl-xl flex items-center justify-center'>{(item.status)}</div>
                     </div>
                 </div>

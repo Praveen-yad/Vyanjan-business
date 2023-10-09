@@ -43,8 +43,8 @@ const Card = ({item}) => {
             <div className='text-lg'>{item.CategoryName}</div>
             <textarea readOnly={true} value={item.description.slice(0,100)} className='bg-transparent h-[5rem] py-1 w-full outline-none mt-2'/>
             <div className='flex justify-between sm:justify-start space-x-0 sm:space-x-4 mt-3'>
-                <div className='bg-theme px-4 py-1 rounded-bl-xl sm:rounded-bl-md rounded-md' >Half:{item.options.half}</div> 
-                <div className='bg-theme px-4 py-1 rounded-md'>Full: {item.options.full}</div>
+                <div className='bg-neutral-800 px-4 py-1 rounded-bl-xl rounded-md' >Half:{item.options.half}</div> 
+                <div className='bg-neutral-800 px-4 py-1 rounded-md'>Full: {item.options.full}</div>
                 <motion.div whileTap={{scale:0.97}} className='bg-red-500 px-4 py-1 rounded-md cursor-pointer rounded-br-xl sm:rounded-br-md' onClick={() => setModal(!modal)} >Remove</motion.div>
             </div>
         </div>
